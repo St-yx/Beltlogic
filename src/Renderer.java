@@ -1,3 +1,5 @@
+// Renderer generating visualization for entire production line in terminal
+
 import java.util.*;
 
 public class Renderer {

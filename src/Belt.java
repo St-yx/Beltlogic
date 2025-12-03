@@ -1,12 +1,15 @@
+// Conveyor belt witch automatic shutdown based in sensors
+
 public class Belt {
     private int length;
     private final int criticalTime;
     private boolean running = true;
     private boolean inCritical = false;
     
-    private int countA1 = 0;
-    private int countA2 = 0;
-    private int countB = 0;
+    // Sensor counters
+    private int countA1 = 0; // Parts entering Belt
+    private int countA2 = 0; // Parts leaving Belt
+    private int countB = 0; // Parts passing SensorB before Belt
 
     private boolean sensorB = false;
     private int sensorBTime = 0;
@@ -33,7 +36,7 @@ public class Belt {
     }
 
     public void triggerB(){
-        sensorBTime = criticalTime + 2; // reset timer
+        sensorBTime = criticalTime + 2; // reset timer + safety buffer
         sensorB = false;
         countB++;
     }
@@ -43,15 +46,19 @@ public class Belt {
             sensorBTime--;
         }
 
+        // Determine if part in critical zone before Belt
         if ((countB == countA1) && (sensorBTime == 0)){
-            inCritical = false; // Kein Teil im Bereich B, Teil lange nicht durch SensorB
+            inCritical = false; // No part in zone B, timer expired
         } else if ((sensorBTime <= criticalTime) && !(countB == countA1)){
-            inCritical = true; // Teil im krit Bereich, Belt schaltet nicht mehr ab
+            inCritical = true; // Part in critical zone
         } else if ((countB == countA1) && (sensorBTime > criticalTime)){
-            inCritical = false; // Teil hat krit Bereich verlassen, neues Teil noch nicht in krit Bereich
+            inCritical = false; // Part left critical zone, new part didn't pass B yet
         }
 
-        boolean sensorA = !((countA1 - countA2) == 0);
+
+        boolean sensorA = !((countA1 - countA2) == 0); // Sensor A true if part(s) on Belt
+
+        // Decide if SensorB should trigger belt stop
         if (inCritical && sensorA){
             sensorB = true;
         } else {

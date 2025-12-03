@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args){
+
+        // Define belts and machines in order
         Belt b1 = new Belt(8,10);
         Machine m1 = new Machine(8);
         Belt b3 = new Belt(19,10);
@@ -29,6 +31,7 @@ public class Main {
         System.out.println("ENTER generates new Part");
         System.out.println("Ctrl+C stops the Simulation\n");
 
+        // Handling for Simulation controls
         try{
             for (int tick = 0; tick < 1000; tick++){
                 System.out.println("\n>>> TICK: " + tick + " <<<");

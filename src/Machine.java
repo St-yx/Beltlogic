@@ -1,3 +1,5 @@
+// Machine holds parts for specific cycle time
+
 class Machine {
     private int cycleTime;
     private int remainTime = 0;

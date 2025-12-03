@@ -1,3 +1,5 @@
+// Conveyor manages entire production line: segments, parts movement rules, line component linking
+
 import java.util.*;
 
 public class Conveyor {
@@ -8,6 +10,7 @@ public class Conveyor {
     public Conveyor(List<Segment> segments){
         this.segments = segments;
 
+        // Calculate and assign start positions for all segments in line
         int currentUnit = 0;
         for (Segment s : segments) {
             if (s instanceof BeltSegment){
@@ -25,6 +28,8 @@ public class Conveyor {
     }
 
     public void tick(){
+        // Trigger SensorB for all belts when parts reach trigger position
+        // Trigger position = belt start - (belt length + 2 units buffer)
         for (Segment s : segments){
             if (s instanceof BeltSegment) {
                 BeltSegment bs = (BeltSegment) s;
@@ -42,6 +47,7 @@ public class Conveyor {
             }
         }
 
+        // Tick machines and belts
         for (Segment s : segments){
             if (s instanceof BeltSegment){
                 ((BeltSegment) s).getBelt().tick();
@@ -50,7 +56,8 @@ public class Conveyor {
             }
         }
 
-                for (Segment s : segments){
+        // start machines for newly arrived parts
+        for (Segment s : segments){
             if (s instanceof MachineSegment){
                 MachineSegment ms = (MachineSegment) s;
                 Machine machine = ms.getMachine();
@@ -65,8 +72,10 @@ public class Conveyor {
             }
         }
 
+        // Collision avoiding by sorting backwards
         parts.sort((a, b) -> Integer.compare(b.getPos(), a.getPos()));
 
+        // Track occupied positions
         Set<Integer> occupiedPos = new HashSet<>();
         for (Part p : parts){
             occupiedPos.add(p.getPos());
@@ -78,10 +87,12 @@ public class Conveyor {
 
             boolean canMove = true;
 
+            // Check 1: next position free?
             if (occupiedPos.contains(nextPos)){
                 canMove = false;
             }
 
+            // Check 2: part in busy machine?
             if (canMove) {
                 for (Segment s : segments){
                     if (s instanceof MachineSegment){
@@ -94,6 +105,7 @@ public class Conveyor {
                 }                
             }
 
+            // Check 3: belt running?
             if (canMove && currentPos >= 0){
                 for (Segment s : segments){
                     if (s instanceof BeltSegment){
@@ -103,7 +115,7 @@ public class Conveyor {
 
                         if (currentPos >= beltStart && currentPos <= beltEnd){
                             if (!bs.getBelt().isRunning()){
-                                canMove = false;
+                                canMove = false; // this should never happen
                             }
                             break;
                         }
@@ -111,11 +123,13 @@ public class Conveyor {
                 }
             }
 
+            // execute movement, trigger sensors
             if (canMove){
                 occupiedPos.remove(currentPos);
                 p.move();
                 occupiedPos.add(p.getPos());
 
+                // Trigger Sensor A1 when entering belt, A2 when leaving
                 for (Segment s : segments){
                     if (s instanceof BeltSegment){
                         BeltSegment bs = (BeltSegment) s;
@@ -133,6 +147,7 @@ public class Conveyor {
             }
         }
 
+        // remove parts on last segment of line
         Iterator<Part> it = parts.iterator();
         while (it.hasNext()){
             Part p = it.next();
@@ -142,6 +157,7 @@ public class Conveyor {
         }
     }
 
+    // Terminal output for state information visualization 
     public void printState(){
         System.out.println("\n===System Status===");
 
