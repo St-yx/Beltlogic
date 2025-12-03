@@ -56,22 +56,6 @@ public class Conveyor {
             }
         }
 
-        // start machines for newly arrived parts
-        for (Segment s : segments){
-            if (s instanceof MachineSegment){
-                MachineSegment ms = (MachineSegment) s;
-                Machine machine = ms.getMachine();
-                int machinePos = ms.getStartUnit();
-
-                for (Part p : parts){
-                    if (p.getPos() == machinePos && !machine.isBusy()){
-                        machine.start();
-                        break;
-                    }
-                }
-            }
-        }
-
         // Collision avoiding by sorting backwards
         parts.sort((a, b) -> Integer.compare(b.getPos(), a.getPos()));
 
@@ -142,6 +126,22 @@ public class Conveyor {
                         if (currentPos == beltEnd && p.getPos() == beltEnd + 1){
                             bs.getBelt().hitA2();
                         }
+                    }
+                }
+            }
+        }
+
+        // start machines for newly arrived parts
+        for (Segment s : segments){
+            if (s instanceof MachineSegment){
+                MachineSegment ms = (MachineSegment) s;
+                Machine machine = ms.getMachine();
+                int machinePos = ms.getStartUnit();
+
+                for (Part p : parts){
+                    if (p.getPos() == machinePos && !machine.isBusy()){
+                        machine.start();
+                        break;
                     }
                 }
             }
