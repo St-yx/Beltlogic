@@ -167,9 +167,17 @@ public class Conveyor {
             Segment s = segments.get(i);
             if (s instanceof BeltSegment) {
                 BeltSegment bs = (BeltSegment) s;
+                Belt belt = bs.getBelt();
+                boolean sensorA = (belt.getCountA1() == belt.getCountA2());
+
                 System.out.println("Segment " + i + " = Belt " + (beltCount++) + 
                     " | Running: " + bs.getBelt().isRunning() +
                     " | Start: " + bs.getStartUnit());
+                System.out.println("  └─ SensorA: " + sensorA + 
+                    " (A1=" + belt.getCountA1() + ", A2=" + belt.getCountA2() + ")" +
+                    " | SensorB: " + belt.getSensorB() +
+                    " (Timer=" + belt.getSensorBTime() + ", B=" + belt.getCountB() +
+                    ", InCrit=" + belt.getInCritical() + ")");
             }else if (s instanceof MachineSegment){
                 MachineSegment ms = (MachineSegment) s;
                 System.out.println("Segment " + i + " = Machine" + (machineCount++) + 

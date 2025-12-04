@@ -1,4 +1,4 @@
-// Conveyor belt witch automatic shutdown based in sensors
+// Conveyor belt with automatic shutdown based in sensors
 
 public class Belt {
     private int length;
@@ -67,4 +67,11 @@ public class Belt {
 
         running = sensorA || sensorB;
     }
+ 
+    public int getCountA1(){ return countA1; }
+    public int getCountA2(){ return countA2; }
+    public int getCountB(){ return countB; }
+    public int getSensorBTime(){return sensorBTime; }
+    public boolean getSensorB(){ return sensorB; }
+    public boolean getInCritical(){ return inCritical; }
 }
