@@ -168,7 +168,7 @@ public class Conveyor {
             if (s instanceof BeltSegment) {
                 BeltSegment bs = (BeltSegment) s;
                 Belt belt = bs.getBelt();
-                boolean sensorA = (belt.getCountA1() == belt.getCountA2());
+                boolean sensorA = !(belt.getCountA1() == belt.getCountA2());
 
                 System.out.println("Segment " + i + " = Belt " + (beltCount++) + 
                     " | Running: " + bs.getBelt().isRunning() +
@@ -177,12 +177,14 @@ public class Conveyor {
                     " (A1=" + belt.getCountA1() + ", A2=" + belt.getCountA2() + ")" +
                     " | SensorB: " + belt.getSensorB() +
                     " (Timer=" + belt.getSensorBTime() + ", B=" + belt.getCountB() +
-                    ", InCrit=" + belt.getInCritical() + ")");
+                    ", InCrit=" + belt.getInCritical() + ", set=" + belt.getSet() + ")");
+                System.out.println();
             }else if (s instanceof MachineSegment){
                 MachineSegment ms = (MachineSegment) s;
                 System.out.println("Segment " + i + " = Machine" + (machineCount++) + 
                     " | Remaining: " + ms.getMachine().getRemainTime() +
                     " | Pos: " + ms.getStartUnit());
+                System.out.println();
             }
         }
         System.out.print("Parts positions: ");
