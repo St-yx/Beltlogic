@@ -177,7 +177,7 @@ public class Conveyor {
                 boolean sensorA = !(belt.getCountA1() == belt.getCountA2());
 
                 System.out.println("Segment " + i + " = Belt " + (beltCount++) + 
-                    " | Running: " + bs.getBelt().isRunning() +
+                    "    | Running: " + bs.getBelt().isRunning() +
                     " | Start: " + bs.getStartUnit());
                 System.out.println("  └─ SensorA: " + sensorA + 
                     " (A1=" + belt.getCountA1() + ", A2=" + belt.getCountA2() + ")" +
@@ -187,9 +187,9 @@ public class Conveyor {
                 System.out.println();
             }else if (s instanceof MachineSegment){
                 MachineSegment ms = (MachineSegment) s;
-                System.out.println("Segment " + i + " = Machine" + (machineCount++) + 
+                System.out.println("Segment " + i + " = Machine " + (machineCount++) + 
                     " | Remaining: " + ms.getMachine().getRemainTime() +
-                    " | Pos: " + ms.getStartUnit());
+                    "   | Pos: " + ms.getStartUnit());
                 System.out.println();
             }
         }
