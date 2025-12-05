@@ -6,6 +6,7 @@ public class Conveyor {
     private List<Segment> segments;
     private List<Part> parts = new ArrayList<>();
     private int totalUnits;
+    private boolean set;
 
     public Conveyor(List<Segment> segments){
         this.segments = segments;
@@ -120,8 +121,13 @@ public class Conveyor {
                         int beltStart = bs.getStartUnit();
                         int beltEnd = beltStart + bs.getBelt().getLength() -1;
 
-                        if (p.getPos() == beltStart){
+                        if (p.getPos() == beltStart - 1){
                             bs.getBelt().hitA1();
+                            set = true;
+                        }
+                        if ((p.getPos() == beltStart) && !(set)){
+                            bs.getBelt().hitA1();
+                            set = false;
                         }
                         if (currentPos == beltEnd && p.getPos() == beltEnd + 1){
                             bs.getBelt().hitA2();
