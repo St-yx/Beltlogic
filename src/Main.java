@@ -7,8 +7,8 @@ public class Main {
         // Define belts and machines in order
         Belt b1 = new Belt(8,10);
         Machine m1 = new Machine(8);
-        Belt b3 = new Belt(19,10);
-        Belt b2 = new Belt(12,10);
+        Belt b2 = new Belt(19,10);
+        Belt b3 = new Belt(12,10);
         Belt b4 = new Belt(9,10);
         Machine m2 = new Machine(20);
         Belt b5 = new Belt(15,10);
