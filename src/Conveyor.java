@@ -28,6 +28,25 @@ public class Conveyor {
     }
 
     public void tick(){
+        // Track part posistions before movements
+        Map<Belt, Set<Integer>> partsOnBeltBefore = new HashMap<>();
+        for (Segment s : segments){
+            if (s instanceof BeltSegment) {
+                BeltSegment bs = (BeltSegment) s;
+                Belt belt = bs.getBelt();
+                int beltStart = bs.getStartUnit();
+                int beltEnd = beltStart + belt.getLength() - 1;
+                
+                Set<Integer> positions = new HashSet<>();
+                for (Part p : parts){
+                    if (p.getPos() >= beltStart && p.getPos() <= beltEnd){
+                        positions.add(p.getPos());
+                    }
+                }
+                partsOnBeltBefore.put(belt, positions);
+            }
+        }
+
         // Trigger SensorB for all belts when parts reach trigger position
         // Trigger position = belt start - (belt length + 2 units buffer)
         for (Segment s : segments){
@@ -126,6 +145,44 @@ public class Conveyor {
                         }
                     }
                 }
+            }
+        }
+
+        for (Segment s : segments){
+            if (s instanceof BeltSegment) {
+                BeltSegment bs = ( BeltSegment) s;
+                Belt belt = bs.getBelt();
+                int beltStart = bs.getStartUnit();
+                int beltEnd = beltStart + belt.getLength() -1;
+
+                Set<Integer> positionsBefore = partsOnBeltBefore.get(belt);
+                boolean partsMoved = false;
+
+                for (Part p : parts){
+                    if (p.getPos() >= beltStart && p.getPos() <= beltEnd){
+                        if(positionsBefore.isEmpty() || !positionsBefore.contains(p.getPos())){
+                            partsMoved = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!partsMoved && !positionsBefore.isEmpty()){
+                    for (int oldPos : positionsBefore){
+                        boolean stillThere = false;
+                        for (Part p : parts){
+                            if (p.getPos() == oldPos) {
+                                stillThere = true;
+                                break;
+                            }
+                        }
+                        if (!stillThere){
+                            partsMoved = true;
+                            break;
+                        }
+                    }
+                }
+                belt.checkMovement(partsMoved);
             }
         }
 
