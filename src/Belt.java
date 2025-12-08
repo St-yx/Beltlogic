@@ -12,9 +12,13 @@ public class Belt {
     private int countA2 = 0; // Parts leaving Belt
     private int countB = 0;  // Parts passing SensorB before Belt
 
+    private boolean basicSensorA = false;
     private boolean sensorA = false;
     private boolean sensorB = false;
     private int sensorBTimer = 0;
+
+    private boolean jammed = false;
+    private int jamTimer = 0;
 
     public Belt(int length, int critical){
         this.length = length;
@@ -47,12 +51,22 @@ public class Belt {
         }
     }
 
+    public void checkMovement(boolean partsMoved){
+        if(!partsMoved && (countA1 != countA2)){
+            jamTimer++;
+        } else{
+            jamTimer = 0;
+        }
+
+        jammed = (jamTimer >= critical);
+    }
+
     public void tick(){
         if (sensorBTimer > 0){
             sensorBTimer--;
         }
 
-        sensorA = !(countA1 == countA2); // Sensor A true if part(s) on Belt
+        basicSensorA = !(countA1 == countA2); // Sensor A true if part(s) on Belt
 
         // check if part has entered zone B, but not left
         if (countB > countA1)
@@ -73,6 +87,12 @@ public class Belt {
             sensorB = false;
         }
 
+        if (jammed && !zoneB){
+            sensorA = false;
+        } else{
+            sensorA = basicSensorA;
+        }
+
         running = sensorA || sensorB;
     }
  
@@ -83,4 +103,6 @@ public class Belt {
     public boolean getSensorB(){ return sensorB; }
     public boolean getInCritical(){ return zoneB; }
     public boolean getSet(){ return set; }
+    public boolean isJammed(){ return jammed; }
+    public int getJamTimer() { return jamTimer; }
 }
