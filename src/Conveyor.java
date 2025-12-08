@@ -148,7 +148,8 @@ public class Conveyor {
             }
         }
 
-        for (Segment s : segments){
+        for (int i = 0; i < segments.size(); i++) {
+            Segment s = segments.get(i);
             if (s instanceof BeltSegment) {
                 BeltSegment bs = ( BeltSegment) s;
                 Belt belt = bs.getBelt();
@@ -182,7 +183,17 @@ public class Conveyor {
                         }
                     }
                 }
-                belt.checkMovement(partsMoved);
+                
+                boolean machineBlocking = false;
+                if (i + 1 < segments.size()){
+                    Segment nextSegment = segments.get(i + 1);
+                    if (nextSegment instanceof MachineSegment){
+                        Machine nextMachine = ((MachineSegment) nextSegment).getMachine();
+                        machineBlocking = nextMachine.isBusy();
+                    }
+                }
+
+                belt.checkMovement(partsMoved, machineBlocking);
             }
         }
 

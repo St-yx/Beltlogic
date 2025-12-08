@@ -51,14 +51,19 @@ public class Belt {
         }
     }
 
-    public void checkMovement(boolean partsMoved){
+    public void checkMovement(boolean partsMoved, boolean machineBlocking){
         if(!partsMoved && (countA1 != countA2)){
             jamTimer++;
         } else{
             jamTimer = 0;
         }
 
-        jammed = (jamTimer >= critical);
+        if (machineBlocking) {
+            jammed = (jamTimer >= critical);
+        } else {
+            jammed = false;
+            jamTimer = 0;
+        }
     }
 
     public void tick(){
