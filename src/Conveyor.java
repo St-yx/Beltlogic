@@ -54,8 +54,7 @@ public class Conveyor {
                 BeltSegment bs = (BeltSegment) s;
                 Belt belt = bs.getBelt();
                 int beltStart = bs.getStartUnit();
-                int triggerDist = belt.getLength() + 2;
-                int triggerPos = beltStart - triggerDist;
+                int triggerPos = beltStart - belt.getCritical();
 
                 for (Part p : parts) {
                     if (p.getPos() == triggerPos){

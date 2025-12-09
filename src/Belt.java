@@ -2,7 +2,7 @@
 
 public class Belt {
     private int length;
-    private final int critical;
+    private int critical = 5;
     private boolean running = false;
     private boolean zoneB = false;
     private boolean set = false;
@@ -20,13 +20,16 @@ public class Belt {
     private boolean jammed = false;
     private int jamTimer = 0;
 
-    public Belt(int length, int critical){
+    public Belt(int length){
         this.length = length;
-        this.critical = critical;
     }
 
     public int getLength(){
         return length;
+    }
+
+    public int getCritical(){
+        return critical;
     }
 
     public boolean isRunning(){
