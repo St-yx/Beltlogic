@@ -1,3 +1,4 @@
+[Fix]       Sensor A nicht mehr in Maschine auslösen
 [Feature]   Stau als Ausnahme für Sensor A implementieren
 [Feature]   Visualisierung erweitern / Verbessern - evtl. JS
 [Fix]       Debug auslagern
