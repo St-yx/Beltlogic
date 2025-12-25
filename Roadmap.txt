@@ -1,4 +1,4 @@
-[Fix]       Sensor A nicht mehr in Maschine auslösen (1.0.2)
-[Feature]   Stau als Ausnahme für Sensor A implementieren (1.1)
-[Feature]   Visualisierung erweitern / Verbessern - evtl. JS
-[Fix]       Debug auslagern
+[Fix]    {done} Sensor A nicht mehr in Maschine auslösen (1.0.2)
+[Feature]       Stau als Ausnahme für Sensor A implementieren (1.1)
+[Feature]       Visualisierung erweitern / Verbessern - evtl. JS
+[Fix]           Debug auslagern
