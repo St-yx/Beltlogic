@@ -16,6 +16,8 @@ public class Belt {
     private boolean sensorB = false;
     private int sensorBTimer = 0;
 
+    private Machine precedingMachine = null;
+
     public Belt(int length){
         this.length = length;
     }
@@ -30,6 +32,14 @@ public class Belt {
 
     public boolean isRunning(){
         return running;
+    }
+
+    public Machine getPrecedingMachine(){
+        return precedingMachine;
+    }
+
+    public void setPrecedingMachine(Machine machine){
+        this.precedingMachine = machine;
     }
 
     public void hitA1(){
@@ -58,11 +68,24 @@ public class Belt {
         sensorA = !(countA1 == countA2); // Sensor A true if part(s) on Belt
 
         // check if part has entered zone B, but not left
-        if (countB > countA1)
-            zoneB = true;
-        else {
-            zoneB = false;
-            set = false;
+        // for belts after machines check remainTime
+        if (precedingMachine != null){
+            if (precedingMachine.isBusy() && precedingMachine.getRemainTime() < critical) {
+                zoneB = true;
+                if (running){
+                    set = true;
+                }
+            } else if (precedingMachine.getRemainTime() >= critical){
+                zoneB = false;
+                set = false;
+            }
+        } else {
+            if (countB > countA1)
+                zoneB = true;
+            else {
+                zoneB = false;
+                set = false;
+            }
         }
 
         // set sensorB if belt was running when part entered zoneB
